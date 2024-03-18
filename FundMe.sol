@@ -1,14 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
-contract fundme{
-    uint public minimumdonate;
-    address public owner;
- 
- function FundME(uint _minimum)public returns(uint){
 
-    require(msg.vslue < 0.2,"not enough donate");
+error InsufficientGas();
+contract fundme{
+    uint public MinimumDonate;
+    address payable public owner;
+    address [] public immutable owners;
+    mapping(address => uint256) public AmountFund;
+
+ constructor(){
+   owners = payable(msg.sender);
  }
- function getprice()public view returns(){
-   
+
+  modifier _Fund(){
+    if(msg.value < 0.8 eth){revert InsufficientGas();}
+  }
+ 
+ function getprice(uint _minimum)public payable InSufficientGas returns(uint){
+
+   owner.transfer(msg.value);
+   MinimumDonate = _minimum;
+   return minimum;
  }
 }
